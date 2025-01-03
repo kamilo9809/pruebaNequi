@@ -1,0 +1,32 @@
+services:
+  app:
+    build: .
+    container_name: appNequi
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev 
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/nequiPrueba
+      - SPRING_DATASOURCE_USERNAME=nequi
+      - SPRING_DATASOURCE_PASSWORD=nequi
+    depends_on:
+      - db-mysql
+    networks:
+      - backendNetwork
+
+  db-mysql:
+      image: mysql:latest
+      container_name: db-mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: root_password
+        MYSQL_DATABASE: nequiPrueba
+        MYSQL_USER: nequi
+        MYSQL_PASSWORD: nequi
+      ports:
+        - "3306:3306"
+      networks:
+        - backendNetwork
+
+networks:
+    backendNetwork:
+      driver: bridge
